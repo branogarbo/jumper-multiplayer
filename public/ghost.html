@@ -11,8 +11,8 @@
     <script>
       let winW = window.innerWidth;
       let winH = window.innerHeight;
-
       let res, resj;
+
       async function getPos() {
         res = await fetch('/pos');
         resj = await res.json();
