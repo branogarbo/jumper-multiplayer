@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
+    <style>
+      body {
+        margin:0;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let winW = window.innerWidth;
+      let winH = window.innerHeight;
+
+      let res, resj;
+      async function getPos() {
+        res = await fetch('/pos');
+        resj = await res.json();
+      }
+      
+      function setup() {
+        createCanvas(winW,winH);
+        rectMode(CENTER);
+      }
+
+      async function draw() {
+        clear();
+        
+        getPos();
+        
+        fill('red');
+        circle(resj[0].xpos,resj[0].ypos,50);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "jumper-multiplayer",
+  "version": "1.0.0",
+  "description": "Using express and prob gonna host it on a VPS later.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/branogarbo/jumper-multiplayer.git"
+  },
+  "author": "Brian Longmore",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/branogarbo/jumper-multiplayer/issues"
+  },
+  "homepage": "https://github.com/branogarbo/jumper-multiplayer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nedb": "^1.8.0"
+  }
+}

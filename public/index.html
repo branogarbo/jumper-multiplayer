@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
+    <style>
+      body {
+        margin:0;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      var winW = window.innerWidth;
+      var winH = window.innerHeight;
+
+      function jumper() {
+        this.x = 26;
+        this.y = winH/2;
+        this.gravity = 0.6;
+        this.lift = -20;
+        this.velocity = 0;
+
+        this.display = async () => {
+          fill('red');
+          circle(this.x,this.y,50);
+
+          let options = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              frame: frameCount,
+              xpos: player.x,
+              ypos: player.y
+            })
+          }
+
+          await fetch('/pos',options);
+        }
+
+        this.update = () => {
+          keyIsDown(65) && this.x > 25 ? this.x -= 10 : {};
+          keyIsDown(68) && this.x < winW-25 ? this.x += 10 : {};
+
+          this.velocity += this.gravity;
+          this.velocity *= 0.95;
+          this.y += this.velocity;
+
+          if (this.y < 25) {
+            this.y = 25;
+            this.velocity = 0;
+          }
+
+          if(this.y > winH-25) {
+            this.y = winH-25;
+            this.velocity = 0;
+          }
+        }
+
+        this.jump = () => this.velocity += this.lift;
+      }
+
+      let player;
+
+      function setup() {
+        createCanvas(winW,winH);
+        
+        rectMode(CENTER);
+        
+        player = new jumper();
+        
+        player.display();
+      }
+
+      function draw() {
+        clear();
+
+        player.display();
+        player.update();
+      }
+
+      function keyPressed() {
+        keyCode == 32 ? player.jump() : {};
+      }
+    </script>
+  </body>
+</html>
