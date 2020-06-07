@@ -1,6 +1,7 @@
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <style>
       body {
         margin:0;
@@ -11,6 +12,7 @@
     <script>
       var winW = window.innerWidth;
       var winH = window.innerHeight;
+      let socket = io();
 
       function jumper() {
         this.x = winW/2;
@@ -23,19 +25,10 @@
           fill('red');
           circle(this.x,this.y,50);
 
-          let options = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              frame: frameCount,
-              xpos: player.x,
-              ypos: player.y
-            })
-          }
-
-          await fetch('/pos',options);
+          socket.emit('draw', {
+            xpos: this.x,
+            ypos: this.y
+          });
         }
 
         this.update = () => {

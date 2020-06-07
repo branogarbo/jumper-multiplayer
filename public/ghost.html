@@ -1,6 +1,7 @@
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <style>
       body {
         margin:0;
@@ -11,12 +12,13 @@
     <script>
       let winW = window.innerWidth;
       let winH = window.innerHeight;
-      let res, resj;
+      let xpos, ypos;
 
-      async function getPos() {
-        res = await fetch('/pos');
-        resj = await res.json();
-      }
+      let socket = io();
+
+      socket.on('draw', data=>{
+        ({ xpos, ypos } = data);
+      });
       
       function setup() {
         createCanvas(winW,winH);
@@ -24,12 +26,10 @@
       }
 
       async function draw() {
-        clear();
-        
-        getPos();
+        clear();        
         
         fill('red');
-        circle(resj[0].xpos,resj[0].ypos,50);
+        circle(xpos,ypos,50);
       }
     </script>
   </body>

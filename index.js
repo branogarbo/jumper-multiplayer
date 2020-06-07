@@ -1,25 +1,19 @@
 const express = require('express');
-const db = require('nedb');
-const app = express();
+const socket = require('socket.io');
 const port = 3000;
 
-app.listen(port, console.log(`Listening on port ${port}`));
+let app = express();
+let server = app.listen(port, console.log(`Listening on port ${port}`));
+
 app.use(express.static('public'));
-app.use(express.json({limit:'1mb'}));
 
-let playerPos = new db('playerPos.db');
-playerPos.loadDatabase();
+let io = socket(server);
 
-app.post('/pos', (req,res)=>{
-  const pos = req.body;
-  
-  playerPos.remove({},{multi:true});
-  playerPos.insert(pos);
-  res.end();
-});
+io.on('connection', socket=>{
 
-app.get('/pos', (req,res)=>{
-  playerPos.find({},(err,data)=>{
-    res.json(data);
+  socket.on('draw', data=>{
+    io.sockets.emit('draw', data);
+    console.log(data);
   });
+  
 });
